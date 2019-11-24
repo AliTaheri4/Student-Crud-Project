@@ -1,0 +1,94 @@
+﻿@model StudentCrudProject.Models.Student
+
+@{
+    ViewData["Title"] = "Create";
+}
+<style>
+    .separator {
+        margin: 20px;
+    }
+</style>
+<h1>Create</h1>
+
+<h4>Student</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Average" class="control-label"></label>
+                <input asp-for="Average" class="form-control" />
+                <span asp-validation-for="Average" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegisterDate" class="control-label"></label>
+                <input asp-for="RegisterDate" class="form-control" />
+                <span asp-validation-for="RegisterDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age" class="control-label"></label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <div class="separator"><input type="radio" name="Sex" value="0" class="form-check-input" asp-for="Sex" checked="" /><span>زن</span></div>
+                    <div class="separator">    <input type="radio" name="Sex" value="1" class="form-check-input" asp-for="Sex" /> <span>مرد</span>
+            </div>
+            </label>
+</div>
+            <div class="form-group">
+                <input id="btnGet" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function() {
+            $("#btnGet").click(function () {
+                var fName = $('#FirstName').val();
+                var lName = $('#LastName').val();
+                var average = $('#Average').val();
+                var registerDate = $('#RegisterDate').val();
+                var age = $('#Age').val();
+
+                var sex;
+                if ($('#Sex').val().toString() == '0' || $('#Sex').val().toString() == '' || $('#Sex').val().toString() == null)
+                    sex = false;  //woman
+                else 
+                    sex = true;//man
+
+                var student = { FirstName: fName, LastName: lName, Average: average, RegisterDate: registerDate, Age: age, Sex: sex };
+                $.ajax({
+                    type: "POST",
+                    url: "/Students/Create",
+                    data: student,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(response) {
+                        alert('با موفقیت ثبت شد.');
+                    }
+                 
+                });
+            });
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
